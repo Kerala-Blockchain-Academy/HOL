@@ -1,0 +1,32 @@
+{
+  "name": "projecthol",
+  "version": "1.0.0",
+  "description": "Making alcohol whole again !",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js tcp://validator:4004"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/dlakhan/projecthol.git"
+  },
+  "author": "Lakhan, Richu",
+  "license": "ISC",
+  "dependencies": {
+    "protobufjs": "^6.7.3",
+    "secp256k1": "^3.2.5",
+    "uuid": "^3.0.1",
+    "zeromq": "^4.2.1",
+    "sawtooth-sdk": "^1.0.2",
+    "text-encoding": "^0.6.4"
+  },
+  "devDependencies": {
+    "mocha": "^3.2.0",
+    "standard": "^8.6.0",
+    "underscore": "^1.8.3"
+  },
+  "bugs": {
+    "url": "https://gitlab.com/dlakhan/projecthol/issues"
+  },
+  "homepage": "https://gitlab.com/dlakhan/projecthol#readme"
+}
