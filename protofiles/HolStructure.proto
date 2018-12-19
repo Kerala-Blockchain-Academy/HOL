@@ -1,0 +1,24 @@
+package HolStructure;
+
+syntax = "proto3";
+
+
+message holStructure 
+{
+    string manufacturerID = 1;
+    string bottleID = 2;
+    string dateMfr = 3;
+
+    string stockistID = 4;
+    string stockistEntry = 5;
+    string stockistExit = 6;
+
+    string warehouseID = 7;
+    string wareEntry = 8;
+    string wareExit = 9;
+
+    string posID = 10;
+    string posEntry = 11;
+    string posSale = 12;
+
+}
