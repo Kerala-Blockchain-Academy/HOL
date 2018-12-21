@@ -1,6 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var router = express.Router();
+var path = require('path');
     //var {SimpleWalletClient} = require('./SimpleWalletClient') 
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
@@ -11,22 +12,22 @@ router.get('/', function(req, res){
 
 //Get home view
 router.get('/manufacturer', function(req, res){
-    res.render('manufacturer');
+    res.sendFile(path.join(__dirname, '/clients/manufacturer.html'));
 });
 
 //Get main view
 router.get('/sale', function(req, res){
-    res.render('sale');
+    res.sendFile(path.join(__dirname, '/clients/sale.html'));
 });
 
 // Get Deposit view
 router.get('/stockist',function(req, res){
-    res.render('stockist_to_warehouse');
+    res.sendFile(path.join(__dirname, '/clients/stockist_to_warehouse.html'));
 })
 
 //Get Withdraw view
 router.get('/warehouse',function(req, res){
-    res.render('warehouse_to_pos');
+    res.sendFile(path.join(__dirname, '/clients/warehouse_to_pos.html'));
 })
 
 /*

@@ -4,16 +4,16 @@
 var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
-var exphbs = require('express-handlebars');
+//var exphbs = require('express-handlebars');
 
 var app = express();
 
 var routes = require('./index');
 
 // View Engine
-    app.set('views', path.join(__dirname, 'client_views'));
-    app.engine('handlebars', exphbs({defaultLayout:'layout'}));
-    app.set('view engine', 'handlebars');
+    //app.set('views', path.join(__dirname, 'clients'));
+    // app.engine('handlebars', exphbs({defaultLayout:'layout'}));
+    // app.set('view engine', 'handlebars');
 
 // BodyParser Middleware
 app.use(bodyParser.json());
