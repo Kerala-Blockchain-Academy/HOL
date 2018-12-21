@@ -16,11 +16,66 @@ var decoder = new TextDecoder('utf8')
 
 const { TransactionHandler } = require('sawtooth-sdk/processor/handler')// require the transaction module here from SDK
 
-//declare all CONSTANTS 
+//declaring all CONSTANTS 
 const FAMILY_NAME = 'manufacturing';
 const NAMESPACE = _hash(FAMILY_NAME).substr(0,6);
 
+//Loading ProtoBuf
+var assetCreateProto;
+protobuf.load("../protofiles/HolStructure.proto", function(err,root) 
+  {
+    if (err)
+    {
+      throw (err);
+    }
+    assetCreateProto = root.lookupType("HolStructure.holStructure");
+    
+  });
 
+const 
+
+//function to decode & validate payload coming from the client
+const _decodeRequest = function(payload)
+{
+  var payloadActions = payload.split(',');
+  var payloadDecoded = {action: payloadActions[0], bottleID: payloadActions[1], liqType: payloadActions[2], mfrID: payloadActions[3], mfrTime: payloadActions[4] };
+  return payloadDecoded;
+}
+
+//check payload for null i.e. if it follows all rules
+const checkPayload = function(payloadDecoded)
+{
+  if((payloadDecoded.action==='create') && payloadDecoded.bottleID && payloadDecoded.liqType && payloadDecoded.mfrID && payloadDecoded.mfrTime)
+  {
+    return true;
+  }
+  throw new InvalidTransaction('Invalid Payload: Payload must follow convention') ;
+}
+
+
+
+const createAsset = function(context, payloadDecoded, assetAddress)
+{
+    let  manufacturerID = payloadDecoded.mfrID
+    let  liqType = payloadDecoded.liqType
+    let  bottleID = payloadDecoded.bottleID
+    let  dateMfr = payloadDecoded.mfrTime
+  
+  encodedStateValue = assetCreateProto.encode(
+    {
+      manufacturerID = manufacturerID,
+      liqType = liqType,
+      bottleID = bottleID,
+      dateMfr = dateMfr
+    }
+  ).finish();
+  
+  let stateVal = {[assetAddress]: encodedStateValue};
+  return (context.setState(stateVal))
+
+
+    
+}
 
 
 
@@ -40,22 +95,17 @@ class ManufacturerHandler extends TransactionHandler
     //extracting and decoding payload from TransactionProcessRequest
     var payload = txProcessRequest.payload;
     var payloadDecoded = _decodeRequest(payload.toString());
-
+    
+    
     console.log("TXPROCREQUEST: ",txProcessRequest)
-    console.log("Payload Actions: ",payloadDecoded.action, typeof (payloadDecoded.action))
-    console.log("Payload Type: ",payloadDecoded.cType)
-    console.log("Payload Quantity: ",payloadDecoded.quantity, typeof (payloadDecoded.quantity))
     console.log("PAYLOAD: ",payload.toString()) 
 
-    // //getting state address from TransactionHeader
-    // let txHeader = txProcessRequest.header;
-    // let userPublicKey = txHeader.signerPublicKey;
-    // let stateAddress = NAMESPACE+_hash(userPublicKey)
-    
-
-
   
-
+    if(checkPayload(payloadDecoded))
+    {
+      let assetAddress = _hash(payloadDecoded.bottleID)
+      return (createAsset(context, payloadDecoded, assetAddress));
+    }
 
    
   }
@@ -63,4 +113,4 @@ class ManufacturerHandler extends TransactionHandler
 
 
 
-module.exports = CookieJarHandler// Module name here
+module.exports = ManufacturerHandler// Module name here

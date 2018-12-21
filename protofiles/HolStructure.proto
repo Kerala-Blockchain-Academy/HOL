@@ -6,19 +6,20 @@ syntax = "proto3";
 message holStructure 
 {
     string manufacturerID = 1;
-    string bottleID = 2;
-    string dateMfr = 3;
+    string liqType = 2;
+    string bottleID = 3;
+    string dateMfr = 4;
 
-    string stockistID = 4;
-    string stockistEntry = 5;
-    string stockistExit = 6;
+    string stockistID = 5;
+    string stockistEntry = 6;
+    string stockistExit = 7;
 
-    string warehouseID = 7;
-    string wareEntry = 8;
-    string wareExit = 9;
+    string warehouseID = 8;
+    string wareEntry = 9;
+    string wareExit = 10;
 
-    string posID = 10;
-    string posEntry = 11;
-    string posSale = 12;
+    string posID = 11;
+    string posEntry = 12;
+    string posSale = 13;
 
 }
