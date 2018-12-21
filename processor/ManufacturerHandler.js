@@ -20,7 +20,7 @@ const { TransactionHandler } = require('sawtooth-sdk/processor/handler')// requi
 const FAMILY_NAME = 'manufacturing';
 const NAMESPACE = _hash(FAMILY_NAME).substr(0,6);
 
-//Loading ProtoBuf
+//loading ProtoBuf
 var assetCreateProto;
 protobuf.load("../protofiles/HolStructure.proto", function(err,root) 
   {
@@ -32,7 +32,7 @@ protobuf.load("../protofiles/HolStructure.proto", function(err,root)
     
   });
 
-const 
+
 
 //function to decode & validate payload coming from the client
 const _decodeRequest = function(payload)
@@ -49,24 +49,25 @@ const checkPayload = function(payloadDecoded)
   {
     return true;
   }
-  throw new InvalidTransaction('Invalid Payload: Payload must follow convention') ;
+  throw new InvalidTransaction('Invalid Payload: Payload must follow convention.') ;
 }
 
 
-
+//creating asset record in state
 const createAsset = function(context, payloadDecoded, assetAddress)
 {
     let  manufacturerID = payloadDecoded.mfrID
     let  liqType = payloadDecoded.liqType
     let  bottleID = payloadDecoded.bottleID
     let  dateMfr = payloadDecoded.mfrTime
+    let encodedStateValue
   
   encodedStateValue = assetCreateProto.encode(
     {
-      manufacturerID = manufacturerID,
-      liqType = liqType,
-      bottleID = bottleID,
-      dateMfr = dateMfr
+      manufacturerID: manufacturerID,
+      liqType: liqType,
+      bottleID: bottleID,
+      dateMfr: dateMfr
     }
   ).finish();
   

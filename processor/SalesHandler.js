@@ -18,9 +18,56 @@ const { TransactionHandler } = require('sawtooth-sdk/processor/handler')// requi
 //declare all CONSTANTS 
 const FAMILY_NAME = 'sales';
 const NAMESPACE = _hash(FAMILY_NAME).substr(0,6);
+//loading ProtoBuf
+var assetCreateProto;
+protobuf.load("../protofiles/HolStructure.proto", function(err,root) 
+  {
+    if (err)
+    {
+      throw (err);
+    }
+    assetCreateProto = root.lookupType("HolStructure.holStructure");
+    
+  });
 
 
 
+//function to decode & validate payload coming from the client
+const _decodeRequest = function(payload)
+{
+  var payloadActions = payload.split(',');
+  var payloadDecoded = {action: payloadActions[0], bottleID: payloadActions[1], saleTime: payloadActions[2]};
+  return payloadDecoded;
+}
+
+//check payload for null i.e. if it follows all rules
+const checkPayload = function(payloadDecoded)
+{
+  if((payloadDecoded.action==='sale') && payloadDecoded.bottleID && payloadDecoded.saleTime)
+  {
+    return true;
+  }
+  throw new InvalidTransaction('Invalid Payload: Payload must follow convention.') ;
+}
+
+
+
+//function to update sales of asset in state
+const saleAsset = function(context, payloadDecoded, assetAddress)
+{
+  let encodedStateValue
+  let saleTime = payloadDecoded.saleTime
+
+  encodedStateValue = assetCreateProto.encode(
+    {
+      posSale: saleTime
+    }
+  ).finish();
+
+  let stateVal = {[assetAddress]: encodedStateValue};
+  return (context.setState(stateVal))
+
+}
 
 
 //main class that extends the TransactionHandler class
@@ -39,21 +86,17 @@ class SalesHandler extends TransactionHandler
     //extracting and decoding payload from TransactionProcessRequest
     var payload = txProcessRequest.payload;
     var payloadDecoded = _decodeRequest(payload.toString());
-
+    
+    
     console.log("TXPROCREQUEST: ",txProcessRequest)
-    console.log("Payload Actions: ",payloadDecoded.action, typeof (payloadDecoded.action))
-    console.log("Payload Type: ",payloadDecoded.cType)
-    console.log("Payload Quantity: ",payloadDecoded.quantity, typeof (payloadDecoded.quantity))
     console.log("PAYLOAD: ",payload.toString()) 
 
-    // //getting state address from TransactionHeader
-    // let txHeader = txProcessRequest.header;
-    // let userPublicKey = txHeader.signerPublicKey;
-    // let stateAddress = NAMESPACE+_hash(userPublicKey)
-    
-
-
   
+    if(checkPayload(payloadDecoded))
+    {
+      let assetAddress = _hash(payloadDecoded.bottleID)
+      return (saleAsset(context, payloadDecoded, assetAddress));
+    }
 
 
    
@@ -62,4 +105,4 @@ class SalesHandler extends TransactionHandler
 
 
 
-module.exports = CookieJarHandler// Module name here
+module.exports = SalesHandler// Module name here
