@@ -16,7 +16,7 @@
         <form action="/action_page.php">
           <div class="form-group">
             <label for="bottle">Bottle id:</label>
-            <input type="text" class="form-control" id="bottle-id" placeholder="Enter the id of bottle" name="bottle">
+            <input type="text" class="form-control" id="bottle_id" placeholder="Enter bottle ID" name="bottle">
           </div>
           <div class="form-group">
             <label for="sel1">Type of liquor:</label>
@@ -28,7 +28,7 @@
             </select>
           </div>
          
-          <button type="submit" class="btn btn-default" id="create_new_bottle_btn">Create New Bottle</button>
+          <button type="submit" class="btn btn-default" id="btn_createBottle">Create New Bottle</button>
         </form>
 </div>
 
@@ -39,23 +39,23 @@
         <form action="/action_page.php">
           
           <div class="form-group">
-            <label for="sel1">bottle id</label>
-            <select class="form-control" id="sel1">
-              <option selected disabled hidden>bottle id</option>
+            <label for="sel1">Bottle ID</label>
+            <select class="form-control" id="list_bottleid">
+              <option selected disabled hidden>Bottle ID</option>
               <option>id1</option>
               <option>id2</option>
               <option>id3</option>
             </select>
             <br/>
             <label for="sel2">Transferring to:</label>
-            <select class="form-control" id="sel2">
+            <select class="form-control" id="list_stockistid">
               <option selected disabled hidden>transfer to</option>
               <option>Stockist 1</option>
               <option>Stockist 2</option>
               <option>Stockist 3</option>
             </select>
             <br/>
-            <button type="submit" class="btn btn-default">Transfer Custodianship</button>
+            <button type="submit" class="btn btn-default" id="btn_transferCustody">Transfer Custodianship</button>
             <br/><br/>
 
 
