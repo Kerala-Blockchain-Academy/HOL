@@ -21,14 +21,30 @@ router.get('/sale', function(req, res){
 });
 
 // Get Stockist view
-router.get('/stockist',function(req, res){
-    res.sendFile(path.join(__dirname, '/clients/stockist_to_warehouse.html'));
+router.get('/stockist1',function(req, res){
+    res.sendFile(path.join(__dirname, '/clients/stockist_1.html'));
+})
+
+router.get('/stockist2',function(req, res){
+    res.sendFile(path.join(__dirname, '/clients/stockist_2.html'));
 })
 
 //Get Warehouse view
-router.get('/warehouse',function(req, res){
-    res.sendFile(path.join(__dirname, '/clients/warehouse_to_pos.html'));
+router.get('/warehouse1',function(req, res){
+    res.sendFile(path.join(__dirname, '/clients/warehouse_1.html'));
 })
+
+router.get('/warehouse2',function(req, res){
+    res.sendFile(path.join(__dirname, '/clients/warehouse_2.html'));
+})
+
+//Posting a new bottleID
+router.post('/createbottle', function(req, res) {
+    var bottleId = req.body.bottleId;
+    var ProjectHolClient = new ProjectHolClient(); 
+    ProjectHolClient.createNewBottle(bottleId);    
+    res.send({message:"Bottle "+ bottleId +" successfully created"});
+});
 
 
 
