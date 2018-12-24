@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SawtoothService } from '../sawtooth.service';
 
 @Component({
   selector: 'app-stockist',
@@ -7,9 +8,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StockistComponent implements OnInit {
 
-  constructor() { }
+  constructor(private data: SawtoothService) { }
 
   ngOnInit() {
   }
+
+  FAMILYNAME = 'transfer'
+  FROMTYPE = 'STK'
+  onSubmit(f)
+  {
+    
+    const bottleID = f.value.bottle_id;
+    const warehouseID= f.value.warehouse_id;
+    const transferTime = new Date()
+    this.data.sendData('transfer',[bottleID,this.FROMTYPE,warehouseID, transferTime],this.FAMILYNAME);
+    
+
+  }
+
+
 
 }

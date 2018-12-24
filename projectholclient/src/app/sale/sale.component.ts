@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { SawtoothService } from '../sawtooth.service';
+
 
 @Component({
   selector: 'app-sale',
@@ -7,9 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SaleComponent implements OnInit {
 
-  constructor() { }
+  constructor(private data: SawtoothService) { }
 
+  FAMILYNAME ='sales'
   ngOnInit() {
   }
+
+  onSubmit(f)
+  {
+   
+    const bottleID = f.value.bottle_id;
+    const saleTime = new Date()
+    this.data.sendData('sale',[bottleID, saleTime],this.FAMILYNAME);
+   
+  }
+
 
 }

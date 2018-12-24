@@ -14,6 +14,7 @@ export class ManufacturerComponent implements OnInit {
 
   }
   FAMILYNAME = 'manufacturing'
+  FROMTYPE = 'MFR'
 
   onSubmit(f)
   {
