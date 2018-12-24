@@ -13,6 +13,7 @@ export class ManufacturerComponent implements OnInit {
   ngOnInit() {
 
   }
+  FAMILYNAME = 'manufacturing'
 
   onSubmit(f)
   {
@@ -20,8 +21,10 @@ export class ManufacturerComponent implements OnInit {
     console.log(f.value)
     const bottleID = f.value.bottle_id;
     const bottleType= f.value.bottle_type;
-
-    this.data.sendData('create',bottleID);
+    const mfrTime = new Date()
+    console.log(mfrTime)
+    const mfrID = 'MFR001'
+    this.data.sendData('create',[bottleID, bottleType,mfrID, mfrTime],this.FAMILYNAME);
     
 
   }

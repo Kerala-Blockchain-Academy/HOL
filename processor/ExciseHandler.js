@@ -61,4 +61,4 @@ class ExciseHandler extends TransactionHandler
 
 
 
-module.exports = CookieJarHandler// Module name here
+module.exports = ExciseHandler// Module name here

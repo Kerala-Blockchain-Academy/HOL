@@ -17,19 +17,20 @@ export class SawtoothService {
   public address: any;
   public transactionHeaderBytes: any;
   
-  private FAMILY_NAME = 'projecthol';
+  private FAMILY_NAME;
   private FAMILY_VERSION = '1.0';
   private REST_API_BASE_URL = 'http://localhost:4200/api';
   
+  
 
-  constructor(public http: HttpClient) { 
+  constructor() { 
     const context = createContext('secp256k1');
     // Creating a random private key - In LIVE, we will be using our own private keys
     const privateKey = context.newRandomPrivateKey();
     this.signer = new CryptoFactory(context).newSigner(privateKey);
     this.publicKey = this.signer.getPublicKey().asHex();
     // Creating address
-    this.address =  this.hash("cookiejar").substr(0, 6) + this.hash(this.publicKey).substr(0, 64);
+    // this.address =  this.hash("cookiejar").substr(0, 6) + this.hash(this.publicKey).substr(0, 64);
     console.log("Storing at: " + this.address);
   }
 
@@ -44,9 +45,15 @@ export class SawtoothService {
   private hash(v) {
     return createHash('sha512').update(v).digest('hex');
   }
+  
 
-  public async sendData(action,values) {
+  public async sendData(action,values,familyName) {
     // Encode the payload
+    this.FAMILY_NAME = familyName
+    this.address = this.hash(values[0]).substr(0, 70)
+
+    console.log(action,values)
+    console.log("ADDRESS: ", this.address)
     const payload = this.getEncodedData(action, values);
 
     const transactionsList = this.getTransactionsList(payload);
