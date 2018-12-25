@@ -4,7 +4,7 @@
   <form (ngSubmit)="onSubmit(f)" #f="ngForm">
     <div class="form-group">
       <label for="bottle">Bottle ID:</label>
-      <input ngModel required  type="text" class="form-control" placeholder="Enter bottle ID" name="bottle_id">
+      <input ngModel required  type="text" class="form-control" placeholder="Enter Bottle ID" name="bottle_id">
     </div>
     <div class="form-group">
       <label for="sel1">Type of Liquor:</label>
@@ -30,15 +30,15 @@
       <label for="sel1">Bottle ID</label>
       <select class="form-control" name="list_bottleid" ngModel required>
         <option selected disabled hidden>Bottle ID</option>
-        <option>id1</option>
+        <option value="Beer001">Beer001</option>
         <option>id2</option>
         <option>id3</option>
       </select>
       <br/>
       <label for="sel2">Transferring to:</label>
-      <select class="form-control" name="list_stockistid">
+      <select class="form-control" name="list_stockistid" ngModel required>
         <option selected disabled hidden>Transfer To</option>
-        <option>Stockist 1</option>
+        <option value="Stockist1">Stockist 1</option>
         <option>Stockist 2</option>
         <option>Stockist 3</option>
       </select>

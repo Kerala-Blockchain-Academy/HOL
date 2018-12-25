@@ -56,6 +56,7 @@ const checkPayload = function(payloadDecoded)
 //creating asset record in state
 const createAsset = function(context, payloadDecoded, assetAddress)
 {
+  console.log("****HITTING createAsset ENCODE BLOCK***")
     let  manufacturerID = payloadDecoded.mfrID
     let  liqType = payloadDecoded.liqType
     let  bottleID = payloadDecoded.bottleID
@@ -99,7 +100,7 @@ class ManufacturerHandler extends TransactionHandler
     
     
     console.log("TXPROCREQUEST: ",txProcessRequest)
-    console.log("PAYLOAD: ",payload.toString()) 
+    console.log("PAYLOAD : ",payload.toString()) 
 
   
     if(checkPayload(payloadDecoded))

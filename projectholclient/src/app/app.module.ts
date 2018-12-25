@@ -10,6 +10,7 @@ import { ManufacturerComponent } from './manufacturer/manufacturer.component';
 import { SaleComponent } from './sale/sale.component';
 import { StockistComponent } from './stockist/stockist.component';
 import { WarehouseComponent } from './warehouse/warehouse.component';
+import { CustomerComponent } from './customer/customer.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { WarehouseComponent } from './warehouse/warehouse.component';
     ManufacturerComponent,
     SaleComponent,
     StockistComponent,
-    WarehouseComponent
+    WarehouseComponent,
+    CustomerComponent
   ],
   imports: [
     BrowserModule,
@@ -30,6 +32,7 @@ import { WarehouseComponent } from './warehouse/warehouse.component';
       { path: 'sale', component: SaleComponent },
       { path: 'stockist', component: StockistComponent },
       { path: 'warehouse', component: WarehouseComponent },
+      { path: 'customer', component: CustomerComponent},
       { path: '**', redirectTo: '', pathMatch: 'full' }
 
     ])

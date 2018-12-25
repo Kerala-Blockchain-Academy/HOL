@@ -9,7 +9,7 @@ const {
 const crypto = require('crypto')
 const { TextEncoder, TextDecoder } = require('text-encoding/lib/encoding')
 const protobuf = require("protobufjs")
-const _hash = (x) => crypto.createHash('sha512').update(x).digest('hex').toLowerCase().substring(0, 64)
+const _hash = (x) => crypto.createHash('sha512').update(x).digest('hex').toLowerCase().substring(0, 70)
 var encoder = new TextEncoder('utf8')
 var decoder = new TextDecoder('utf8')
 
@@ -57,7 +57,7 @@ const transferAsset = function(context, payloadDecoded, assetAddress)
   let toID = payloadDecoded.toID 
   let transferTime = payloadDecoded.transferTime
 
-
+  console.log("****HITTING TRANSFERASSET ENCODE BLOCK***")
  //updating the state values based on where the transfer is initiated from 
   if(payloadDecoded.fromType === 'MFR')
   {

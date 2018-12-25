@@ -7,13 +7,14 @@ import { SawtoothService } from '../sawtooth.service';
   styleUrls: ['./manufacturer.component.css']
 })
 export class ManufacturerComponent implements OnInit {
-//sawtooth services being imported for data type usage
+//sawtooth services being imported for usage
   constructor(private data: SawtoothService) { }
 
   ngOnInit() {
 
   }
-  FAMILYNAME = 'manufacturing'
+  FAMILYNAMECREATE = 'manufacturing'
+  FAMILYNAMETRANSFER = 'transfer'
   FROMTYPE = 'MFR'
 
   onSubmit(f)
@@ -22,12 +23,26 @@ export class ManufacturerComponent implements OnInit {
     console.log(f.value)
     const bottleID = f.value.bottle_id;
     const bottleType= f.value.bottle_type;
-    const mfrTime = new Date()
-    console.log(mfrTime)
+    const mfrTime = new Date();
     const mfrID = 'MFR001'
-    this.data.sendData('create',[bottleID, bottleType,mfrID, mfrTime],this.FAMILYNAME);
+    this.data.storeBottleID(bottleID);
+    this.data.sendData('create',[bottleID, bottleType,mfrID, mfrTime],this.FAMILYNAMECREATE);
     
 
   }
+
+  selectChange(event: any){
+
+  }
+  onTransfer(t)
+  {
+    const bottleID2 = t.value.list_bottleid;
+    console.log("bottleID: ", bottleID2)
+    const stockistID= t.value.list_stockistid;
+    const transferTime = new Date();
+    console.log("STOCKISTID", stockistID)
+    this.data.sendData('transfer',[bottleID2,this.FROMTYPE,stockistID, transferTime],this.FAMILYNAMETRANSFER);
+
+}
 
 }

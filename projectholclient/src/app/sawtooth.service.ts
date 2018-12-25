@@ -20,12 +20,12 @@ export class SawtoothService {
   private FAMILY_NAME;
   private FAMILY_VERSION = '1.0';
   private REST_API_BASE_URL = 'http://localhost:4200/api';
-  
+  public bottleArray = new Array ();
   
 
   constructor() { 
     const context = createContext('secp256k1');
-    // Creating a random private key - In LIVE, we will be using our own private keys
+    // Creating a random private key
     const privateKey = context.newRandomPrivateKey();
     this.signer = new CryptoFactory(context).newSigner(privateKey);
     this.publicKey = this.signer.getPublicKey().asHex();
@@ -52,8 +52,9 @@ export class SawtoothService {
     this.FAMILY_NAME = familyName
     this.address = this.hash(values[0]).substr(0, 70)
 
-    console.log(action,values)
+    console.log(action,values.toString())
     console.log("ADDRESS: ", this.address)
+
     const payload = this.getEncodedData(action, values);
 
     const transactionsList = this.getTransactionsList(payload);
@@ -110,8 +111,8 @@ export class SawtoothService {
 
 
   private getEncodedData(action, values): any {
-    console.log("PAYLOAD DATA: ", action, Object.entries(values).toString())
-    const data = action + "," + Object.entries(values).toString();
+    console.log("PAYLOAD DATA: ", action, values.toString())
+    const data = action + "," + values.toString();
     return new TextEncoder('utf8').encode(data);
   }
 
@@ -241,6 +242,12 @@ export class SawtoothService {
     }).finish();
 
     return batchListBytes;
+  }
+
+  public storeBottleID(bottleID): any{
+    
+    this.bottleArray.push(bottleID);
+
   }
 
   
