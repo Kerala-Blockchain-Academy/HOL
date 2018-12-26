@@ -30,6 +30,14 @@ protobuf.load("../protofiles/HolStructure.proto", function(err,root)
     
   });
 
+//function to decode proto buffer from state
+const decodeProto = function(stateValue)
+{
+    var buffer = assetCreateProto.decode(stateValue);
+
+    return buffer;
+}
+
 
 
 //function to decode & validate payload coming from the client
@@ -58,15 +66,46 @@ const saleAsset = function(context, payloadDecoded, assetAddress)
   let encodedStateValue
   let saleTime = payloadDecoded.saleTime
 
-  encodedStateValue = assetCreateProto.encode(
-    {
-      posSale: saleTime
-    }
-  ).finish();
+  let getPromise = context.getState([assetAddress]);
+  return getPromise.then(function checkState(stateMapping){
+  let stateValue = stateMapping[assetAddress];
+  console.log("ENTERED STATEVAL: ",stateValue)
+  var buffer = decodeProto(stateValue);
+  console.log("ASSET BUFFER FROM STATE: ", buffer)
+
+
+  if (buffer.bottleID == payloadDecoded.bottleID)
+  {
+    encodedStateValue = assetCreateProto.encode(
+      {
+        manufacturerID: buffer.manufacturerID,
+        liqType: buffer.liqType,
+        bottleID: buffer.bottleID,
+        dateMfr: buffer.dateMfr,
+        stockistID: buffer.stockistID,
+        stockistEntry: buffer.stockistEntry,
+        stockistExit: buffer.stockistExit,
+        warehouseID: buffer.warehouseID,
+        wareEntry: buffer.wareEntry,
+        wareExit: buffer.wareExit,
+        posID: buffer.posID,
+        posEntry: buffer.posEntry,
+        posSale: saleTime
+      }
+    ).finish();
+
+
+  }
+
+  else
+  {
+    throw new InvalidTransaction('Bottle ID does NOT exist !') ;
+  }
 
   let stateVal = {[assetAddress]: encodedStateValue};
   return (context.setState(stateVal))
 
+});
 }
 
 

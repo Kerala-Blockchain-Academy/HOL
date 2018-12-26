@@ -33,6 +33,13 @@ protobuf.load("../protofiles/HolStructure.proto", function(err,root)
   });
 
 
+const decodeProto = function(stateValue)
+{
+    var buffer = assetCreateProto.decode(stateValue);
+
+    return buffer;
+}
+
 
 //function to decode & validate payload coming from the client
 const _decodeRequest = function(payload)
@@ -71,13 +78,31 @@ const createAsset = function(context, payloadDecoded, assetAddress)
       dateMfr: dateMfr
     }
   ).finish();
+
   
+  console.log("ENCODED PBUF: ", encodedStateValue )
+  viewAsset(context,assetAddress)
   let stateVal = {[assetAddress]: encodedStateValue};
   return (context.setState(stateVal))
-
+  
 
     
 }
+
+
+
+const viewAsset = function(context,assetAddress)
+{
+  let getPromise = context.getState([assetAddress]);
+  return getPromise.then(function checkState(stateMapping){
+  let stateValue = stateMapping[assetAddress];
+  console.log("ENTERED STATEVAL: ",stateValue)
+  var buffer = decodeProto(stateValue);
+  console.log("ASSET BUFFER FROM STATE: ", buffer)
+
+  })
+}
+
 
 
 
@@ -108,6 +133,7 @@ class ManufacturerHandler extends TransactionHandler
       let assetAddress = _hash(payloadDecoded.bottleID)
       return (createAsset(context, payloadDecoded, assetAddress));
     }
+
 
    
   }
