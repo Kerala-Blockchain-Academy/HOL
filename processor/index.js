@@ -17,6 +17,8 @@
 /*this code specifies the Transaction Processor part.This code transfers the 
   transaction processing requests to a registered handler,the CookieJarHandler.*/
  
+  //Purushu enne anugrahikkanam!
+
 
 'use strict'
 //works in strict mode
@@ -52,6 +54,5 @@ transactionProcessor.start()
    handler.
 
 
-   Purushu enne anugrahikkanam!
 */
 
