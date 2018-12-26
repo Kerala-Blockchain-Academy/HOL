@@ -23,7 +23,7 @@ export class SawtoothService {
   public bottleArray = new Array ();
   
 
-  constructor() { 
+  constructor(private http:HttpClient) { 
     const context = createContext('secp256k1');
     // Creating a random private key
     const privateKey = context.newRandomPrivateKey();
@@ -42,7 +42,7 @@ export class SawtoothService {
     return true;
   }
 
-  private hash(v) {
+  public hash(v) {
     return createHash('sha512').update(v).digest('hex');
   }
   
@@ -71,29 +71,34 @@ export class SawtoothService {
   }
 
   public async sendToRestAPI(batchListBytes): Promise<any> {
-    if (batchListBytes == null) {
-      return this.getState(this.address)
-        .then((response) => {
-          return response.json();
-        })
-        .then((responseJson) => {
-          return this.getDecodedData(responseJson)
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-    else {
+    // if (batchListBytes == null) {
+    //   return this.getState(this.address)
+    //     .then((response) => {
+    //       return response.json();
+    //     })
+    //     .then((responseJson) => {
+    //       return this.getDecodedData(responseJson)
+    //     })
+    //     .catch((error) => {
+    //       console.error(error);
+    //     });
+    // }
+    // else {
       console.log("new code");
       return this.postBatchList(batchListBytes)
-    }
+    // }
   }
 
   // Get state of address from rest api
-  private async getState(address): Promise<any> {
-    const getStateURL = this.REST_API_BASE_URL + '/state/' + address;
-    const fetchOptions = { method: 'GET' };
-    return window.fetch(getStateURL, fetchOptions);
+  // private async getState(address): Promise<any> {
+  //   const getStateURL = this.REST_API_BASE_URL + '/state/' + address;
+  //   const fetchOptions = { method: 'GET' };
+  //   return window.fetch(getStateURL, fetchOptions);
+  // }
+
+  public getState(address)
+  {
+    return this.http.get(this.REST_API_BASE_URL + '/state/'+ address)
   }
 
   // Post batch list to rest api

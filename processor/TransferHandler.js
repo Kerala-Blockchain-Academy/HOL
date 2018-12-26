@@ -32,7 +32,16 @@ protobuf.load("../protofiles/HolStructure.proto", function(err,root)
     
   });
 
-  //function to decode & validate payload coming from the client
+//function to decode proto buffer from state
+const decodeProto = function(stateValue)
+  {
+      var buffer = assetCreateProto.decode(stateValue);
+  
+      return buffer;
+  }
+
+
+//function to decode & validate payload coming from the client
 const _decodeRequest = function(payload)
 {
   var payloadActions = payload.split(',');
@@ -58,11 +67,25 @@ const transferAsset = function(context, payloadDecoded, assetAddress)
   let transferTime = payloadDecoded.transferTime
 
   console.log("****HITTING TRANSFERASSET ENCODE BLOCK***")
- //updating the state values based on where the transfer is initiated from 
+
+  let getPromise = context.getState([assetAddress]);
+  return getPromise.then(function checkState(stateMapping){
+  let stateValue = stateMapping[assetAddress];
+  console.log("ENTERED STATEVAL: ",stateValue)
+  var buffer = decodeProto(stateValue);
+  console.log("ASSET BUFFER FROM STATE: ", buffer)
+ 
+//updating the state values based on where the transfer is initiated from 
+if (buffer.bottleID == payloadDecoded.bottleID)
+{
   if(payloadDecoded.fromType === 'MFR')
   {
     encodedStateValue = assetCreateProto.encode(
-      {
+      { 
+        manufacturerID: buffer.manufacturerID,
+        liqType: buffer.liqType,
+        bottleID: buffer.bottleID,
+        dateMfr: buffer.dateMfr,
         stockistID: toID,
         stockistEntry: transferTime
       }
@@ -72,8 +95,14 @@ const transferAsset = function(context, payloadDecoded, assetAddress)
   {
     encodedStateValue = assetCreateProto.encode(
       {
-        warehouseID: toID,
+        manufacturerID: buffer.manufacturerID,
+        liqType: buffer.liqType,
+        bottleID: buffer.bottleID,
+        dateMfr: buffer.dateMfr,
+        stockistID: buffer.stockistID,
+        stockistEntry: buffer.stockistEntry,
         stockistExit: transferTime,
+        warehouseID: toID,
         wareEntry: transferTime
       }
     ).finish();
@@ -82,16 +111,39 @@ const transferAsset = function(context, payloadDecoded, assetAddress)
   {
     encodedStateValue = assetCreateProto.encode(
       {
-        posID: toID,
+        manufacturerID: buffer.manufacturerID,
+        liqType: buffer.liqType,
+        bottleID: buffer.bottleID,
+        dateMfr: buffer.dateMfr,
+        stockistID: buffer.stockistID,
+        stockistEntry: buffer.stockistEntry,
+        stockistExit: buffer.stockistExit,
+        warehouseID: buffer.warehouseID,
+        wareEntry: buffer.wareEntry,
         wareExit: transferTime,
+        posID: toID,
         posEntry: transferTime
       }
     ).finish();
   }
 
+}
+else
+{
+  throw new InvalidTransaction('Bottle ID does NOT exist !') ;
+}
+  
+
+
   let stateVal = {[assetAddress]: encodedStateValue};
   return (context.setState(stateVal))
 
+
+
+  });
+
+
+ 
 }
 
 
