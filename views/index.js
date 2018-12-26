@@ -42,6 +42,7 @@ router.get('/warehouse2',function(req, res){
 router.post('/createbottle', function(req, res) {
     var bottleId = req.body.bottleId;
     var ProjectHolClient = new ProjectHolClient(); 
+    //createNewBottle() to be implemented
     ProjectHolClient.createNewBottle(bottleId);    
     res.send({message:"Bottle "+ bottleId +" successfully created"});
 });
