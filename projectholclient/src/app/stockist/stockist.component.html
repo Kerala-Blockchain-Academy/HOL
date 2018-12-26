@@ -4,19 +4,12 @@
     
     <div class="form-group">
       <label for="sel1">Bottle ID</label>
-      <select class="form-control" name="bottle_id" ngModel required>
-        <option selected disabled hidden>Bottle ID</option>
-        <option value="Beer001">Beer001</option>
-        <option>id2</option>
-        <option>id3</option>
-      </select>
+      <input ngModel required  type="text" class="form-control" placeholder="Enter Bottle ID" name="bottle_id">
       <br/>
       <label for="sel2">Transferring To:</label>
       <select class="form-control" name="warehouse_id" ngModel required>
         <option selected disabled hidden>transfer to</option>
         <option value="Warehouse1">Warehouse 1</option>
-        <option>Warehouse 2</option>
-        <option>Warehouse 3</option>
       </select>
       <br/>
       <button type="submit" class="btn btn-default" id="btn_transferCustody" [disabled]="!f.valid">Transfer Custodianship</button>

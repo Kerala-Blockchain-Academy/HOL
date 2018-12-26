@@ -30,17 +30,13 @@
       <label for="sel1">Bottle ID</label>
       <select class="form-control" name="list_bottleid" ngModel required>
         <option selected disabled hidden>Bottle ID</option>
-        <option value="Beer001">Beer001</option>
-        <option>id2</option>
-        <option>id3</option>
+        <option *ngFor = "let bottle of BOTTLEARRAY" [value]="bottle">{{bottle}}</option>
       </select>
       <br/>
       <label for="sel2">Transferring to:</label>
       <select class="form-control" name="list_stockistid" ngModel required>
         <option selected disabled hidden>Transfer To</option>
         <option value="Stockist1">Stockist 1</option>
-        <option>Stockist 2</option>
-        <option>Stockist 3</option>
       </select>
       <br/>
       <button type="submit" class="btn btn-default" id="btn_transferCustody" [disabled]="!t.valid">Transfer Custodianship</button>

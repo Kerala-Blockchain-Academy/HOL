@@ -9,12 +9,15 @@ import { SawtoothService } from '../sawtooth.service';
 export class StockistComponent implements OnInit {
 
   constructor(private data: SawtoothService) { }
-
-  ngOnInit() {
-  }
-
+ 
   FAMILYNAME = 'transfer'
   FROMTYPE = 'STK'
+  
+  ngOnInit() {
+    
+  }
+
+  
   onSubmit(f)
   {
     
