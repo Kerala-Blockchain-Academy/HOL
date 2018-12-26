@@ -8,6 +8,7 @@ import {Buffer} from 'buffer/';
 import * as Secp256k1PrivateKey from 'sawtooth-sdk/signing/secp256k1';
 
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -29,8 +30,7 @@ export class SawtoothService {
     const privateKey = context.newRandomPrivateKey();
     this.signer = new CryptoFactory(context).newSigner(privateKey);
     this.publicKey = this.signer.getPublicKey().asHex();
-    // Creating address
-    // this.address =  this.hash("cookiejar").substr(0, 6) + this.hash(this.publicKey).substr(0, 64);
+    
     console.log("Storing at: " + this.address);
   }
 
@@ -46,6 +46,19 @@ export class SawtoothService {
     return createHash('sha512').update(v).digest('hex');
   }
   
+
+  // Protobuf decoder/encoder shelved for now
+  //public assetCreateProto;
+  // projectHolProto.load("../../../protofiles/HolStructure.proto", function(err,root) 
+  // {
+  //   if (err)
+  //   {
+  //     throw (err);
+  //   }
+  //   assetCreateProto = root.lookupType("HolStructure.holStructure");
+    
+  // });
+
 
   public async sendData(action,values,familyName) {
     // Encode the payload
@@ -98,7 +111,7 @@ export class SawtoothService {
 
   public getState(address)
   {
-    return this.http.get(this.REST_API_BASE_URL + '/state/'+ address)
+     return this.http.get(this.REST_API_BASE_URL + '/state/'+ address)
   }
 
   // Post batch list to rest api
@@ -121,7 +134,7 @@ export class SawtoothService {
     return new TextEncoder('utf8').encode(data);
   }
 
-  private getDecodedData(responseJSON): string {
+  public getDecodedData(responseJSON): string {
     const dataBytes = responseJSON.data;
     const decodedData = new Buffer(dataBytes, 'base64').toString();
     return decodedData;
@@ -168,9 +181,10 @@ export class SawtoothService {
     return (nameSpace + publicKeySpace);
   }
 
-  /*------------------------------------*/
+
 
   /*-------------Creating transactions & batches--------------------*/
+  
   private getTransactionsList(payload): any {
     // Create transaction header
     const transactionHeader = this.getTransactionHeaderBytes([this.address], [this.address], payload);
@@ -252,6 +266,7 @@ export class SawtoothService {
   public storeBottleID(bottleID): any{
     
     this.bottleArray.push(bottleID);
+    console.log(this.bottleArray);
 
   }
 
