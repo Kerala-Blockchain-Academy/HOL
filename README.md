@@ -31,7 +31,7 @@ Installation Instructions:
 
 Install angular CLI,node,nginx,docker prior to installing this.
 
-1. Clone project from the gitlab url.
+1. Clone project from https://github.com/Kerala-Blockchain-Academy/ProjectHOL.
 2. In a terminal go to /projectholclient and execute command ‘ng build’. Copy the path of the dist folder into the root value of the nginx.conf file.
 3. Copy this nginx.conf file and replace it at /etc/var/nginx/nginx.conf
 4. Run: sudo /etc/init.d/nginx restart
